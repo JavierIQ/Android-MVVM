@@ -5,14 +5,15 @@ import com.example.examplemvvm.data.model.QuoteModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Dispatcher
+import javax.inject.Inject
 
-class QuoteService {
-
-    private val retrofit = RetrofitHelper.getRetrofit()
+class QuoteService @Inject constructor(
+    private val api:QuoteApiClient
+) {
 
     suspend fun getQuotes(): List<QuoteModel>{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(QuoteApiClient::class.java).getAllQuotes()
+            val response = api.getAllQuotes()
             response.body() ?: emptyList()
         }
     }
